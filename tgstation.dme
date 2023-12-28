@@ -8047,6 +8047,7 @@
 #include "modular_tipos\master_files\code\game\objects\items\clothing.dm"
 #include "modular_tipos\master_files\code\game\objects\items\toys.dm"
 #include "modular_tipos\master_files\code\game\objects\items\storage\backpack.dm"
+#include "modular_tipos\master_files\code\game\objects\items\storage\pouch.dm"
 #include "modular_tipos\modules\aesthetics\flag\code\signs_flags.dm"
 #include "modular_tipos\modules\altborgs\code\robot_modules.dm"
 #include "modular_tipos\modules\cargo\packs\costumes_toys.dm"
