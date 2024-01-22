@@ -8128,6 +8128,7 @@
 #include "modular_tipos\modules\cargo\packs\livestock.dm"
 #include "modular_tipos\modules\cargo\packs\medical.dm"
 #include "modular_tipos\modules\cargo\packs\security.dm"
+#include "modular_tipos\modules\clothing\nulo\boar_zero.dm"
 #include "modular_tipos\modules\clothing\suits\armor.dm"
 #include "modular_tipos\modules\company_imports\code\armament_datums\aeon_equipment.dm"
 #include "modular_tipos\modules\customization\modules\mob\dead\new_player\sprite_accesories\ears.dm"
