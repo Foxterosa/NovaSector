@@ -76,6 +76,22 @@
 	name = "Sinner Jacket"
 	item_path =/obj/item/clothing/suit/jacket/sinnerjacket
 
+// Custom boar shit -- Katana Zero
+/datum/loadout_item/under/nmecca_suit
+	name = "Old Mecca Suit"
+	item_path = /obj/item/clothing/under/nmecca_suit
+
+/datum/loadout_item/mask/hh_mask
+	name = "Headhuntress Mask"
+	item_path = /obj/item/clothing/mask/hh_mask
+
+/datum/loadout_item/neck/cromag_collar
+	name = "Old Mecca Pad"
+	item_path = /obj/item/clothing/neck/cromag_scarf
+
+/datum/loadout_item/shoes/oldmecca_boots
+	name = "Old Mecca Boots"
+	item_path = /obj/item/clothing/shoes/combat/cromag_boots
 // Los Tipos - Custom Loadout Toys
 
 /datum/loadout_item/toys/jade

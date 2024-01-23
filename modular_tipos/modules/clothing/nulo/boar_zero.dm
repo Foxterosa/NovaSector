@@ -28,7 +28,7 @@
 	icon_state = "cromag_veil"
 	icon = 'modular_tipos/modules/clothing/nulo/nullsuit.dmi'
 	worn_icon = 'modular_tipos/modules/clothing/nulo/nullsuit.dmi'
-/obj/item/clothing/neck/cromag_boots
+/obj/item/clothing/shoes/combat/cromag_boots
 	name = "Old Mecca boots"
 	desc = "Some badass boots from the Old Mecca army, a little tag says STOMP ON THE FUCKING CROMFAGS"
 	icon_state = "cromag_boot"
