@@ -8067,5 +8067,8 @@
 #include "modular_tipos\modules\modular_weapons\code\company_and_or_faction_based\AEON_sierpinski\revolver.dm"
 #include "modular_tipos\modules\modular_weapons\code\company_and_or_faction_based\AEON_sierpinski\rifle.dm"
 #include "modular_tipos\modules\modular_weapons\code\company_and_or_faction_based\AEON_sierpinski\smg.dm"
+#include "modular_tipos\modules\reagent_forging\code\crafting_bench.dm"
+#include "modular_tipos\modules\reagent_forging\code\crafting_bench_recipes.dm"
+#include "modular_tipos\modules\reagent_forging\code\forge_clothing.dm"
 #include "modular_tipos\modules\reagents\reagent_containers\repair_kits.dm"
 // END_INCLUDE
