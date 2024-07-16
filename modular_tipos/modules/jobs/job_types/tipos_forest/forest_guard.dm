@@ -6,12 +6,12 @@
 	faction = FACTION_FOREST
 	total_positions = 3
 	spawn_positions = 3
-	supervisors = SUPERVISOR_CAPTAIN
+	supervisors = SUPERVISOR_F_CAPTAIN
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "GUARD"
 
 	outfit = /datum/outfit/job/tipos_forest/guard
-	job_flags = FOREST_JOB_FLAGS
+	job_flags = FOREST_JOB_FLAGS | STATION_TRAIT_JOB_FLAGS
 	display_order = JOB_DISPLAY_ORDER_GUARD
 	departments_list = list(
 		/datum/job_department/tipos_forest,

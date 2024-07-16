@@ -11,7 +11,7 @@
 	config_tag = "DOCTOR"
 
 	outfit = /datum/outfit/job/tipos_forest/doctor
-	job_flags = FOREST_JOB_FLAGS
+	job_flags = FOREST_JOB_FLAGS | STATION_TRAIT_JOB_FLAGS
 	display_order = JOB_DISPLAY_ORDER_DOCTOR
 	departments_list = list(
 		/datum/job_department/tipos_forest,

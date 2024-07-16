@@ -11,8 +11,8 @@
 	config_tag = "COOK"
 
 	outfit = /datum/outfit/job/tipos_forest/cook
-	job_flags = FOREST_JOB_FLAGS
-	display_order = JOB_DISPLAY_ORDER_COOK
+	job_flags = FOREST_JOB_FLAGS | STATION_TRAIT_JOB_FLAGS
+	display_order = JOB_DISPLAY_ORDER_F_COOK
 	departments_list = list(
 		/datum/job_department/tipos_forest,
 		)
