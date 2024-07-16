@@ -91,7 +91,6 @@
 	SSblackbox.record_feedback("text", "religion_deity", 1, "[new_deity]", 1)
 	SSblackbox.record_feedback("text", "religion_bible", 1, "[new_bible]", 1)
 
-
 /datum/outfit/job/tipos_forest/priest
 	name = "Priest"
 	jobtype = /datum/job/tipos_forest/priest
