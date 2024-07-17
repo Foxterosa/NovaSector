@@ -69,28 +69,6 @@
 		),
 	)
 
-// Guard armor
-
-/obj/item/clothing/suit/armor/riot/knight/forest_green
-	icon = 'modular_tipos/master_files/icons/obj/clothing/forest_under.dmi'
-	worn_icon = 'modular_tipos/master_files/icons/mob/clothing/forest_under.dmi'
-	icon_state = "knight_green"
-
-/obj/item/clothing/suit/armor/riot/knight/yellow/forest_yellow
-	icon = 'modular_tipos/master_files/icons/obj/clothing/forest_under.dmi'
-	worn_icon = 'modular_tipos/master_files/icons/mob/clothing/forest_under.dmi'
-	icon_state = "knight_yellow"
-
-/obj/item/clothing/suit/armor/riot/knight/blue/forest_blue
-	icon = 'modular_tipos/master_files/icons/obj/clothing/forest_under.dmi'
-	worn_icon = 'modular_tipos/master_files/icons/mob/clothing/forest_under.dmi'
-	icon_state = "knight_blue"
-
-/obj/item/clothing/suit/armor/riot/knight/red/forest_red
-	icon = 'modular_tipos/master_files/icons/obj/clothing/forest_under.dmi'
-	worn_icon = 'modular_tipos/master_files/icons/mob/clothing/forest_under.dmi'
-	icon_state = "knight_red"
-
 // Chainmail Armor
 
 /obj/item/clothing/under/costume/tipos_forest/forging_plate_armor
@@ -116,3 +94,44 @@
 	AddComponent(/datum/component/reagent_clothing, ITEM_SLOT_ICLOTHING)
 
 	allowed += /obj/item/forging/reagent_weapon
+
+// Guard armor
+
+/obj/item/clothing/suit/armor/riot/knight/forest_green
+	icon = 'modular_tipos/master_files/icons/obj/clothing/forest_under.dmi'
+	worn_icon = 'modular_tipos/master_files/icons/mob/clothing/forest_under.dmi'
+	icon_state = "knight_green"
+
+/obj/item/clothing/suit/armor/riot/knight/yellow/forest_yellow
+	icon = 'modular_tipos/master_files/icons/obj/clothing/forest_under.dmi'
+	worn_icon = 'modular_tipos/master_files/icons/mob/clothing/forest_under.dmi'
+	icon_state = "knight_yellow"
+
+/obj/item/clothing/suit/armor/riot/knight/blue/forest_blue
+	icon = 'modular_tipos/master_files/icons/obj/clothing/forest_under.dmi'
+	worn_icon = 'modular_tipos/master_files/icons/mob/clothing/forest_under.dmi'
+	icon_state = "knight_blue"
+
+/obj/item/clothing/suit/armor/riot/knight/red/forest_red
+	icon = 'modular_tipos/master_files/icons/obj/clothing/forest_under.dmi'
+	worn_icon = 'modular_tipos/master_files/icons/mob/clothing/forest_under.dmi'
+	icon_state = "knight_red"
+
+// Guard Helmet
+
+/obj/item/clothing/head/helmet/toggleable/tipos_forest/knight
+	name = "medieval helmet"
+	desc = "A classic metal helmet."
+	icon = 'modular_tipos/master_files/icons/obj/clothing/forest_under.dmi'
+	worn_icon = 'modular_tipos/master_files/icons/mob/clothing/forest_under.dmi'
+	icon_state = "knight"
+	toggle_message = "You pull the visor down on"
+	alt_toggle_message = "You push the visor up on"
+	actions_types = list(/datum/action/item_action/toggle)
+	armor_type = /datum/armor/helmet_knight
+	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDESNOUT
+	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
+	resistance_flags = NONE
+	strip_delay = 80
+	dog_fashion = null
+	clothing_traits = list(TRAIT_HEAD_INJURY_BLOCKED)
