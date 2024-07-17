@@ -135,3 +135,8 @@
 	strip_delay = 80
 	dog_fashion = null
 	clothing_traits = list(TRAIT_HEAD_INJURY_BLOCKED)
+
+/obj/item/clothing/head/helmet/knight/tipos_forest/king
+	name = "lordly helmet"
+	desc = ""
+	icon_state = "helmetking"
