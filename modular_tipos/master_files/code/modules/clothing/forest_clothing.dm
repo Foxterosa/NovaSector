@@ -91,6 +91,14 @@
 	body_parts_covered = CHEST|GROIN|ARMS
 	can_adjust = FALSE
 
+/obj/item/clothing/under/costume/tipos_forest/grenz
+	name = "grenzelhoft rags"
+	desc = ""
+	icon_state = "grenzshirt"
+	inhand_icon_state = null
+	body_parts_covered = CHEST|GROIN|ARMS
+	can_adjust = FALSE
+
 // Face Clothing
 
 /obj/item/clothing/mask/tipos_forest
@@ -122,6 +130,11 @@
 	. = ..()
 	. += span_notice("Alt-click [src] to adjust it.")
 
+/obj/item/clothing/mask/tipos_forest/hood/chainmail
+	name = "chainmail coif"
+	desc = "Doesn't grant any protectión, it looks good tho."
+	icon_state = "chaincoif"
+
 // Head Clothing
 
 /obj/item/clothing/head/hats/tipos_forest
@@ -147,6 +160,12 @@
 	icon_state = "bard_hat"
 	inhand_icon_state = null
 
+/obj/item/clothing/head/hats/tipos_forest/grenz
+	name = "grenzelhoft hat"
+	desc = ""
+	icon_state = "grenzhat"
+	inhand_icon_state = null
+
 /obj/item/clothing/head/costume/crown/tipos_forest
 	icon = 'modular_tipos/master_files/icons/obj/clothing/forest_head.dmi'
 	worn_icon = 'modular_tipos/master_files/icons/mob/clothing/forest_head.dmi'
@@ -169,6 +188,13 @@
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
 
+/obj/item/clothing/gloves/tipos_forest/grenz
+	name = "grenzelhoft gloves"
+	desc = ""
+	icon_state = "grenzgloves"
+	cold_protection = HANDS
+	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
+
 // Forest Feet
 
 /obj/item/clothing/shoes/jackboots/tipos_forest
@@ -184,6 +210,11 @@
 	name = "black leather boots"
 	desc = ""
 	icon_state = "blackboots"
+
+/obj/item/clothing/shoes/jackboots/tipos_forest/grenz
+	name = "grenzelhoft boots"
+	desc = ""
+	icon_state = "grenzboots"
 
 /obj/item/clothing/shoes/clown_shoes/tipos_forest
 	icon = 'modular_tipos/master_files/icons/obj/clothing/forest_feet.dmi'
