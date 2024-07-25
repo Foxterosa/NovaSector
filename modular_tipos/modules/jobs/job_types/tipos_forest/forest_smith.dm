@@ -11,7 +11,7 @@
 	config_tag = "SMITH"
 
 	outfit = /datum/outfit/job/tipos_forest/smith
-	job_flags = FOREST_JOB_FLAGS
+	job_flags = FOREST_JOB_FLAGS | STATION_TRAIT_JOB_FLAGS
 	display_order = JOB_DISPLAY_ORDER_SMITH
 	departments_list = list(
 		/datum/job_department/tipos_forest,
