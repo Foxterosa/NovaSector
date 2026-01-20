@@ -14,6 +14,7 @@
 
 //Misc Medal hub IDs
 #define MEDAL_METEOR "Your Life Before Your Eyes"
+#define MEDAL_METEOR_PUNCH "Your Life In Your Hands"
 #define MEDAL_PULSE "Jackpot"
 #define MEDAL_TIMEWASTE "Overextended The Joke"
 #define MEDAL_RODSUPLEX "Feat of Strength"
@@ -70,6 +71,7 @@
 #define MAFIA_MEDAL_DETECTIVE "Detective"
 #define MAFIA_MEDAL_PSYCHOLOGIST "Psychologist"
 #define MAFIA_MEDAL_CHAPLAIN "Chaplain"
+#define MAFIA_MEDAL_CORONER "Coroner"
 #define MAFIA_MEDAL_MD "Medical Doctor"
 #define MAFIA_MEDAL_OFFICER "Security Officer"
 #define MAFIA_MEDAL_LAWYER "Lawyer"
@@ -102,6 +104,7 @@
 #define BOSS_MEDAL_TENDRIL "Tendril Exterminator"
 #define BOSS_MEDAL_WENDIGO "Wendigo Killer"
 #define BOSS_MEDAL_KINGGOAT "King Goat Killer"
+#define BOSS_MEDAL_THETHING "Thing Exterminator"
 
 #define BOSS_MEDAL_MINER_CRUSHER "Blood-drunk Miner Crusher"
 #define BOSS_MEDAL_FROSTMINER_CRUSHER "Demonic-frost Miner Crusher"
@@ -112,6 +115,7 @@
 #define BOSS_MEDAL_LEGION_CRUSHER "Legion Crusher"
 #define BOSS_MEDAL_WENDIGO_CRUSHER "Wendigo Crusher"
 #define BOSS_MEDAL_KINGGOAT_CRUSHER "King Goat Crusher"
+#define BOSS_MEDAL_THETHING_CRUSHER "Thing Crusher"
 
 // Medal hub IDs for boss-kill scores
 #define BOSS_SCORE "Bosses Killed"
@@ -126,6 +130,7 @@
 #define WENDIGO_SCORE "Wendigos Killed"
 #define KINGGOAT_SCORE "King Goat Killed"
 #define TENDRIL_CLEAR_SCORE "Tendrils Killed"
+#define THETHING_SCORE "The Thing Killed"
 
 // DB ID for hardcore random mode
 #define HARDCORE_RANDOM_SCORE "Hardcore Random Score"
@@ -157,3 +162,6 @@
 
 #define CHEF_TOURISTS_SERVED "Tourists Served As Chef"
 #define BARTENDER_TOURISTS_SERVED "Tourists Served As Bartender"
+
+/// Value in metadata version that signifies the achievement is archived
+#define ACHIEVEMENT_ARCHIVED_VERSION 9999

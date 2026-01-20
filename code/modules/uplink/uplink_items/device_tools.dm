@@ -14,12 +14,28 @@
 	surplus = 50
 	uplink_item_flags = SYNDIE_TRIPS_CONTRABAND
 
-/datum/uplink_item/device_tools/surgerybag
-	name = "Syndicate Surgery Duffel Bag"
-	desc = "The Syndicate surgery duffel bag is a toolkit containing all surgery tools, surgical drapes, \
-			a Syndicate brand MMI, a straitjacket, and a muzzle."
-	item = /obj/item/storage/backpack/duffelbag/syndie/surgery
-	cost = 4
+/datum/uplink_item/device_tools/duffelbag
+	name = "Suspicous Duffel Bag"
+	desc = "A large duffel bag for holding extra tactical supplies. It contains an oiled plastitanium zipper for maximum speed tactical zipping, \
+			and is better balanced on your back than an average duffelbag. Can hold two bulky items!"
+	item = /obj/item/storage/backpack/duffelbag/syndie
+	cost = 2
+	surplus = 50
+
+/datum/uplink_item/device_tools/tactical_medkit
+	name = "combat first aid kit"
+	desc = "An medkit meant for combat support, it contains. Two medicated sutures and mesh, Gauze, Advanced health analyzer, And as last atropine medipen"
+	item = /obj/item/storage/medkit/tactical_lite
+	cost = 3
+	surplus = 72
+	purchasable_from = UPLINK_TRAITORS
+
+/datum/uplink_item/device_tools/surgery_syndie
+	name = "Full Syndicate Surgery Medkit"
+	desc = "The Syndicate surgery medkit is a toolkit containing all surgery tools, surgical drapes, \
+			a syringe, and some sedatives."
+	item = /obj/item/storage/medkit/surgery_syndie
+	cost = 3
 	surplus = 66
 
 /datum/uplink_item/device_tools/encryptionkey
@@ -36,12 +52,13 @@
 	name = "Syndicate Tome"
 	desc = "Using rare artifacts acquired at great cost, the Syndicate has reverse engineered \
 			the seemingly magical books of a certain cult. Though lacking the esoteric abilities \
-			of the originals, these inferior copies are still quite useful, being able to provide \
-			both weal and woe on the battlefield, even if they do occasionally bite off a finger."
+			of the originals, these inferior copies are still quite useful. \
+			Often used by agents to protect themselves against foes who rely on magic while it's held. \
+			Though, it can be used to heal and harm other people with decent effectiveness much like a regular bible. \
+			Can also be used in-hand to 'claim' it, granting you priest-like abilities -- no training required!"
 	item = /obj/item/book/bible/syndicate
 	cost = 5
 
-/* // NOVA EDIT REMOVAL START
 /datum/uplink_item/device_tools/tram_remote
 	name = "Tram Remote Control"
 	desc = "When linked to a tram's on board computer systems, this device allows the user to manipulate the controls remotely. \
@@ -49,7 +66,6 @@
 		Perfect for running someone over in the name of a tram malfunction!"
 	item = /obj/item/assembly/control/transport/remote
 	cost = 2
-*/ // NOVA EDIT REMOVAL END
 
 /datum/uplink_item/device_tools/thermal
 	name = "Thermal Imaging Glasses"
@@ -68,7 +84,6 @@
 	cost = 1
 	surplus = 20
 
-/* // NOVA EDIT REMOVAL
 /datum/uplink_item/device_tools/briefcase_launchpad
 	name = "Briefcase Launchpad"
 	desc = "A briefcase containing a launchpad, a device able to teleport items and people to and from targets up to eight tiles away from the briefcase. \
@@ -85,12 +100,11 @@
 			Comes with 4 charges, recharges randomly. Warranty null and void if exposed to an electromagnetic pulse."
 	item = /obj/item/storage/box/syndie_kit/syndicate_teleporter
 	cost = 8
-*/ // NOVA EDIT REMOVAL END
 
 /datum/uplink_item/device_tools/camera_app
 	name = "SyndEye Program"
 	desc = "A data disk containing a unique PC app that allows you to watch cameras and track crewmembers."
-	item = /obj/item/computer_disk/syndicate/camera_app
+	item = /obj/item/disk/computer/syndicate/camera_app
 	cost = 1
 	surplus = 90
 	purchasable_from = ~UPLINK_ALL_SYNDIE_OPS
@@ -123,14 +137,14 @@
 			when used cause the targeted tablet to become a new uplink with zero TCs, and immediately become unlocked. \
 			You will receive the unlock code upon activating the virus, and the new uplink may be charged with \
 			telecrystals normally."
-	item = /obj/item/computer_disk/virus/frame
+	item = /obj/item/disk/computer/virus/frame
 	cost = 4
 	restricted = TRUE
 	purchasable_from = ~UPLINK_ALL_SYNDIE_OPS
 
 /datum/uplink_item/device_tools/frame/spawn_item(spawn_path, mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
 	. = ..()
-	var/obj/item/computer_disk/virus/frame/target = .
+	var/obj/item/disk/computer/virus/frame/target = .
 	if(!target)
 		return
 	target.current_progression = uplink_handler.progression_points
@@ -179,7 +193,6 @@
 	cost = 3
 	purchasable_from = ~UPLINK_ALL_SYNDIE_OPS
 
-/* NOVA EDIT REMOVAL - It's laggy and doesn't really add much roleplay value
 /datum/uplink_item/device_tools/suspiciousphone
 	name = "Protocol CRAB-17 Phone"
 	desc = "The Protocol CRAB-17 Phone, a phone borrowed from an unknown third party, it can be used to crash the space market, funneling the losses of the crew to your bank account.\
@@ -188,7 +201,6 @@
 	restricted = TRUE
 	cost = 7
 	limited_stock = 1
-*/ // NOVA EDIT REMOVAL END
 
 /datum/uplink_item/device_tools/binary
 	name = "Binary Translator Key"
@@ -262,6 +274,7 @@
 	progression_minimum = 20 MINUTES
 	item = /obj/item/powersink
 	cost = 11
+	limited_stock = 1
 
 /datum/uplink_item/device_tools/syndicate_contacts
 	name = "Polarized Contact Lenses"

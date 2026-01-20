@@ -43,7 +43,7 @@
 
 	var/mutable_appearance/hair_overlay = mutable_appearance(hair.icon, hair.icon_state, layer = -HAIR_LAYER, appearance_flags = RESET_COLOR)
 	hair_overlay.color = color
-	hair_overlay.pixel_y = hair.y_offset
+	hair_overlay.pixel_z = hair.y_offset
 	. += hair_overlay
 
 	// So that the wig actually blocks emissives.
@@ -51,7 +51,7 @@
 
 /obj/item/clothing/head/wig/attack_self(mob/user)
 	var/new_style = tgui_input_list(user, "Select a hairstyle", "Wig Styling", SSaccessories.hairstyles_list - "Bald")
-	var/newcolor = adjustablecolor ? input(usr,"","Choose Color",color) as color|null : null
+	var/newcolor = adjustablecolor ? tgui_color_picker(usr,"","Choose Color",color) : null
 	if(!user.can_perform_action(src))
 		return
 	if(new_style && new_style != hairstyle)

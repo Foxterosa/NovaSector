@@ -15,7 +15,7 @@
 	bonus_value = 15
 
 /obj/item/crusher_trophy/gladiator/effect_desc()
-	return "the crusher to have a <b>[bonus_value]%</b> chance to block incoming attacks."
+	return "the crusher to have a <b>[bonus_value]%</b> chance to block incoming attacks"
 
 /obj/item/crusher_trophy/gladiator/add_to(obj/item/kinetic_crusher/incomingchance, mob/living/user)
 	. = ..()
@@ -34,7 +34,6 @@
 	worn_icon = 'modular_nova/modules/gladiator/icons/berserk_suit.dmi'
 	icon_state = "berk_cape"
 	inhand_icon_state = "" //lul
-	uses_advanced_reskins = FALSE
 	resistance_flags = INDESTRUCTIBLE
 
 /obj/item/clothing/neck/warrior_cape/examine()
@@ -47,6 +46,7 @@
 	icon_state = "berk_suit"
 	icon = 'modular_nova/modules/gladiator/icons/berserk_icons.dmi'
 	worn_icon = 'modular_nova/modules/gladiator/icons/berserk_suit.dmi'
+	worn_icon_digi = 'modular_nova/modules/gladiator/icons/berserk_suit_digi.dmi'
 	hoodtype = /obj/item/clothing/head/hooded/berserker/gatsu
 	w_class = WEIGHT_CLASS_BULKY
 	armor_type = /datum/armor/berserker_gatsu
@@ -125,7 +125,7 @@
 	slot_flags = null
 	force = 20
 	wound_bonus = 10
-	bare_wound_bonus = 5
+	exposed_wound_bonus = 5
 	resistance_flags = INDESTRUCTIBLE
 	armour_penetration = 35 //this boss is really hard and this sword is really big
 	block_chance = 25

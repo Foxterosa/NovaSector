@@ -13,7 +13,7 @@
 /datum/asset/spritesheet/species/create_spritesheets()
 	var/list/to_insert = list()
 
-	for (var/species_id in get_selectable_species() | get_customizable_races()) // NOVA EDIT CHANGE - ORIGINAL: for (var/species_id in get_selectable_species())
+	for (var/species_id in get_selectable_species() + get_customizable_races()) // NOVA EDIT CHANGE - ORIGINAL: for (var/species_id in get_selectable_species())
 		var/datum/species/species_type = GLOB.species_list[species_id]
 
 		var/mob/living/carbon/human/dummy/consistent/dummy = new
@@ -23,7 +23,7 @@
 
 		var/icon/dummy_icon = getFlatIcon(dummy)
 		dummy_icon.Scale(64, 64)
-		dummy_icon.Crop(15, 64, 15 + 31, 64 - 31)
+		dummy_icon.Crop(15, 64 - 31, 15 + 31, 64)
 		dummy_icon.Scale(64, 64)
 		to_insert[sanitize_css_class_name(initial(species_type.name))] = dummy_icon
 

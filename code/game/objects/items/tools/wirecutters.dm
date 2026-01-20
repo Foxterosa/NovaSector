@@ -7,12 +7,12 @@
 	inhand_icon_state = "cutters"
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
-
+	flags_1 = IS_PLAYER_COLORABLE_1|NO_NEW_GAGS_PREVIEW_1
 	greyscale_config = /datum/greyscale_config/wirecutters
 	greyscale_config_belt = /datum/greyscale_config/wirecutters_belt_overlay
 	greyscale_config_inhand_left = /datum/greyscale_config/wirecutter_inhand_left
 	greyscale_config_inhand_right = /datum/greyscale_config/wirecutter_inhand_right
-
+	greyscale_colors = COLOR_RED
 	obj_flags = CONDUCTS_ELECTRICITY
 	slot_flags = ITEM_SLOT_BELT
 	force = 6
@@ -64,14 +64,18 @@
 	playsound(loc, usesound, 50, TRUE, -1)
 	return BRUTELOSS
 
-/obj/item/wirecutters/abductor//NOVA EDIT - ICON OVERRIDDEN BY AESTHETICS - SEE MODULE
+/obj/item/wirecutters/abductor
 	name = "alien wirecutters"
 	desc = "Extremely sharp wirecutters, made out of a silvery-green metal."
-	icon = 'icons/obj/antags/abductor.dmi'
+	icon = 'icons/obj/antags/abductor.dmi' //NOVA EDIT - ICON OVERRIDDEN IN AESTHETICS MODULE
 	custom_materials = list(/datum/material/iron =SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/silver = SHEET_MATERIAL_AMOUNT*1.25, /datum/material/plasma =HALF_SHEET_MATERIAL_AMOUNT, /datum/material/titanium =SHEET_MATERIAL_AMOUNT, /datum/material/diamond =SHEET_MATERIAL_AMOUNT)
 	icon_state = "cutters"
 	toolspeed = 0.1
 	random_color = FALSE
+	greyscale_config = null
+	greyscale_config_inhand_left = null
+	greyscale_config_inhand_right = null
+	greyscale_colors = null
 	snap_time_strong_handcuffs = 1 SECONDS
 
 /obj/item/wirecutters/cyborg
@@ -82,3 +86,5 @@
 	worn_icon_state = "cutters"
 	toolspeed = 0.5
 	random_color = FALSE
+	greyscale_config = null
+	greyscale_colors = null

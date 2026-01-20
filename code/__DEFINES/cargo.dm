@@ -13,6 +13,9 @@
 
 #define SUPPLYPOD_X_OFFSET -16
 
+///DO NOT GO ANY LOWER THAN X1.4 the "CARGO_CRATE_VALUE" value if using regular crates, or infinite profit will be possible! This is also unit tested against.
+#define CARGO_MINIMUM_COST CARGO_CRATE_VALUE * 1.4
+
 /// The baseline unit for cargo crates. Adjusting this will change the cost of all in-game shuttles, crate export values, bounty rewards, and all supply pack import values, as they use this as their unit of measurement.
 #define CARGO_CRATE_VALUE 200
 
@@ -29,8 +32,36 @@
 /// Universal Scanner mode for using the price tagger.
 #define SCAN_PRICE_TAG 3
 
+// Defines for use with `export_item_and_contents()`, aka the export code that sells the items.
+/// Default export define, these are things that are sold to centcom.
+#define EXPORT_MARKET_STATION "supply"
+/// Export market for pirates.
+#define EXPORT_MARKET_PIRACY "piracy"
+
 ///Used by coupons to define that they're cursed
 #define COUPON_OMEN "omen"
+
+// Supply pack flags determining ordering properties
+/// Order is literally never visible, presumably it's an abstract type or something
+#define ORDER_INVISIBLE (1 << 0)
+/// Only orderable on emagged consoles
+#define ORDER_EMAG_ONLY (1 << 1)
+/// Only orderable on consoles with doctored boards
+#define ORDER_CONTRABAND (1 << 2)
+/// Can only be ordered privately, can use discount coupons, and arrives in a bag instead of a crate
+#define ORDER_GOODY (1 << 3)
+/// Can only be ordered via the express order console
+#define ORDER_POD_ONLY (1 << 4)
+/// Can only be ordered if the following flag is also enabled, for conditionally provided options
+#define ORDER_SPECIAL (1 << 5)
+/// If present then a special order can be ordered
+#define ORDER_SPECIAL_ENABLED (1 << 6)
+/// Unavailable to departmental order consoles even if it is in an appropriate category
+#define ORDER_NOT_DEPARTMENTAL (1 << 7)
+/// This will notify admins when it is purchased
+#define ORDER_DANGEROUS (1 << 8)
+/// This is set when something is created by an admin to make sure its contents is also marked as such
+#define ORDER_ADMIN_SPAWNED (1 << 9)
 
 ///Discount categories for coupons. This one is for anything that isn't discountable.
 #define SUPPLY_PACK_NOT_DISCOUNTABLE null

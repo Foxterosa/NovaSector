@@ -14,9 +14,6 @@
 	QDEL_NULL(menu)
 	return ..()
 
-/datum/preference_middleware/loadout/on_new_character(mob/user)
-	preferences.character_preview_view?.update_body()
-
 /datum/preference_middleware/loadout/proc/action_select_item(list/params, mob/user)
 	PRIVATE_PROC(TRUE)
 	var/path_to_use = text2path(params["path"])
@@ -27,14 +24,16 @@
 
 	if(params["deselect"])
 		deselect_item(interacted_item)
-	else
+	else if(!interacted_item.is_disabled())
 		select_item(interacted_item)
 	return TRUE
 
+/* NOVA EDIT REMOVAL: Multiple loadout presets: Handled in the modular file.
 /datum/preference_middleware/loadout/proc/action_clear_all(list/params, mob/user)
 	PRIVATE_PROC(TRUE)
 	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], null)
 	return TRUE
+*/
 
 /datum/preference_middleware/loadout/proc/action_toggle_job_outfit(list/params, mob/user)
 	PRIVATE_PROC(TRUE)
@@ -66,7 +65,7 @@
 
 /// Select [path] item to [category_slot] slot.
 /datum/preference_middleware/loadout/proc/select_item(datum/loadout_item/selected_item)
-	var/list/loadout = preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_current_loadout() // NOVA EDIT CHANGE - Multiple loadout presets - ORIGINAL: var/list/loadout = preferences.read_preference(/datum/preference/loadout)
 	var/list/datum/loadout_item/loadout_datums = loadout_list_to_datums(loadout)
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		if(item.category != selected_item.category)
@@ -75,13 +74,13 @@
 			return
 
 	LAZYSET(loadout, selected_item.item_path, list())
-	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	save_current_loadout(loadout)// NOVA EDIT CHANGE - Multiple loadout presets - ORIGINAL: preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
 
 /// Deselect [deselected_item].
 /datum/preference_middleware/loadout/proc/deselect_item(datum/loadout_item/deselected_item)
-	var/list/loadout = preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_current_loadout()// NOVA EDIT CHANGE - Multiple loadout presets - ORIGINAL: var/list/loadout = preferences.read_preference(/datum/preference/loadout)
 	LAZYREMOVE(loadout, deselected_item.item_path)
-	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	save_current_loadout(loadout)// NOVA EDIT CHANGE - Multiple loadout presets - ORIGINAL: preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
 
 /datum/preference_middleware/loadout/proc/register_greyscale_menu(datum/greyscale_modify_menu/open_menu)
 	src.menu = open_menu

@@ -9,7 +9,7 @@
 	icon = 'modular_nova/modules/modular_weapons/icons/obj/company_and_or_faction_based/xhihao_light_arms/guns40x.dmi'
 	icon_state = "rengo"
 	worn_icon_state = "enchanted_rifle" // Not actually magical looking, just looks closest to this one
-	inhand_icon_state = "enchanted_rifle"
+	inhand_icon_state = "sakhno"
 	slot_flags = ITEM_SLOT_BACK
 	SET_BASE_PIXEL(-8, 0)
 	accepted_magazine_type = /obj/item/ammo_box/magazine/lanca
@@ -18,6 +18,18 @@
 	internal_magazine = FALSE
 	can_be_sawn_off = FALSE
 	weapon_weight = WEAPON_HEAVY
+
+	lore_blurb = "The Xhihao 'Rengo' rifle began as a box of parts and a set of instructions — a \"Sporterization Kit\" sold to frontier gunsmiths and \
+		hobbyists looking to improve their aging Sakhno rifles. The philosophy was simple: don't try to reinvent the wheel, just give \
+		it better bearings. <br><br> \
+		The kit replaces the original furniture with a modern composite chassis featuring an integrated accessory rail, a more ergonomic pistol \
+		grip, and a shortened barrel profile for better balance. The crown jewel of the conversion is the precision - machined magazine well adapter, \
+		which allows the rifle to feed from common Lanca-pattern magazines. This not only increases capacity but also simplifies logistics, as \
+		.310 Strilka ammunition is the most common high-powered cartridge available on the civilian market. <br><br> \
+		The included scope, a modest magnification optic also compatible with the Lanca battle rifle, finally gives the Sakhno's accurate barrel \
+		the sighting system it always deserved. The conversion is irreversible by design; the chassis components are too integrated to allow for sawing \
+		off or reversion to the original stock, a small price to pay for turning a collection of \"sometimes useful\" antiques into a single, highly \
+		capable modern precision platform."
 
 /obj/item/gun/ballistic/rifle/sporterized/Initialize(mapload)
 	. = ..()
@@ -29,21 +41,6 @@
 
 /obj/item/gun/ballistic/rifle/sporterized/give_manufacturer_examine()
 	AddElement(/datum/element/manufacturer_examine, COMPANY_XHIHAO)
-
-/obj/item/gun/ballistic/rifle/sporterized/examine(mob/user)
-	. = ..()
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
-
-/obj/item/gun/ballistic/rifle/sporterized/examine_more(mob/user)
-	. = ..()
-
-	. += "The Xhihao 'Rengo' conversion rifle. Initially a set of chassis parts sold in a single kit by Xhihao Light Arms, \
-		which can be swapped out with many of the outdated or simply old parts on a typical Sakhno rifle. \
-		While not necessarily increasing performance in any way, the magazine is slightly longer. The weapon \
-		is also overall a bit shorter, making it easier to handle for some people. Cannot be sawn off, cutting \
-		really any part of this weapon off would make it non-functional."
-
-	return .
 
 /obj/item/gun/ballistic/rifle/sporterized/empty
 	bolt_locked = TRUE // so the bolt starts visibly open

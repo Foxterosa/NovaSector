@@ -20,11 +20,13 @@
 	alert_type = null
 	/// The level of drunkness we are currently at.
 	var/drunk_value = 0
+	/// If TRUE, drunk_value will be capped at 51, preventing serious damage
+	var/iron_liver = FALSE
 
 /datum/status_effect/inebriated/on_creation(mob/living/new_owner, drunk_value = 0)
 	. = ..()
 	set_drunk_value(drunk_value)
-	
+
 /datum/status_effect/inebriated/get_examine_text()
 	// Dead people don't look drunk
 	if(owner.stat == DEAD || HAS_TRAIT(owner, TRAIT_FAKEDEATH))
@@ -33,9 +35,7 @@
 	// Having your face covered conceals your drunkness
 	if(iscarbon(owner))
 		var/mob/living/carbon/carbon_owner = owner
-		if(carbon_owner.wear_mask?.flags_inv & HIDEFACE)
-			return null
-		if(carbon_owner.head?.flags_inv & HIDEFACE)
+		if(carbon_owner.obscured_slots & HIDEFACE)
 			return null
 
 	// .01s are used in case the drunk value ends up to be a small decimal.
@@ -59,7 +59,8 @@
 /datum/status_effect/inebriated/proc/set_drunk_value(set_to)
 	if(!isnum(set_to))
 		CRASH("[type] - invalid value passed to set_drunk_value. (Got: [set_to])")
-
+	if(iron_liver)
+		set_to = min(51, set_to)
 	drunk_value = set_to
 	if(drunk_value <= 0)
 		qdel(src)
@@ -108,7 +109,8 @@
 /datum/status_effect/inebriated/drunk/on_apply()
 	. = ..()
 	owner.sound_environment_override = SOUND_ENVIRONMENT_PSYCHOTIC
-	owner.add_mood_event(id, /datum/mood_event/drunk)
+	owner.add_mood_event(id, /datum/mood_event/drunk, drunk_value)
+	owner.clear_mood_event("[id]_after")
 	RegisterSignal(owner, COMSIG_MOB_FIRED_GUN, PROC_REF(drunk_gun_fired))
 
 /datum/status_effect/inebriated/drunk/on_remove()
@@ -123,11 +125,14 @@
 /// Clears any side effects we set due to being drunk.
 /datum/status_effect/inebriated/drunk/proc/clear_effects()
 	owner.clear_mood_event(id)
+	if(!QDELING(owner) && HAS_PERSONALITY(owner, /datum/personality/bibulous))
+		owner.add_mood_event("[id]_after", /datum/mood_event/drunk_after)
 
 	if(owner.sound_environment_override == SOUND_ENVIRONMENT_PSYCHOTIC)
 		owner.sound_environment_override = SOUND_ENVIRONMENT_NONE
 
 	UnregisterSignal(owner, COMSIG_MOB_FIRED_GUN)
+	REMOVE_TRAIT(owner, TRAIT_FEARLESS, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/inebriated/drunk/proc/drunk_gun_fired(datum/source, obj/item/gun/gun, atom/firing_at, params, zone, bonus_spread_values)
 	SIGNAL_HANDLER
@@ -144,10 +149,14 @@
 	. = ..()
 	if(QDELETED(src))
 		return
-
 	// Return to "tipsyness" when we're below 6.
 	if(drunk_value < TIPSY_THRESHOLD)
 		owner.apply_status_effect(/datum/status_effect/inebriated/tipsy, drunk_value)
+		return
+
+	var/datum/mood_event/drunk/moodlet = owner.mob_mood.mood_events[id]
+	if(istype(moodlet))
+		moodlet.update_change(drunk_value)
 
 /datum/status_effect/inebriated/drunk/on_tick_effects()
 	// Handle the Ballmer Peak.
@@ -186,6 +195,9 @@
 			if(iscarbon(owner))
 				var/mob/living/carbon/carbon_owner = owner
 				carbon_owner.vomit(VOMIT_CATEGORY_DEFAULT) // Vomiting clears toxloss - consider this a blessing
+		ADD_TRAIT(owner, TRAIT_FEARLESS, TRAIT_STATUS_EFFECT(id))
+	else
+		REMOVE_TRAIT(owner, TRAIT_FEARLESS, TRAIT_STATUS_EFFECT(id))
 
 	// Over 71, we will constantly have blurry eyes
 	if(drunk_value >= 71)
@@ -218,22 +230,21 @@
 				carbon_owner.vomit() // Vomiting clears toxloss - consider this a blessing
 
 	// Over 81, we will gain constant toxloss
-	if(drunk_value >= 83.4)
-		owner.adjustToxLoss(1)
+	if(drunk_value >= 83.4) // NOVA EDIT CHANGE - Alcohol impairment curve smoothing - ORIGINAL: if(drunk_value >= 81)
+		owner.adjust_tox_loss(1)
 		if(owner.stat == CONSCIOUS && prob(5))
 			to_chat(owner, span_warning("Maybe you should lie down for a bit..."))
 
 	// Over 91, we gain even more toxloss, brain damage, and have a chance of dropping into a long sleep
-	if(drunk_value >= 93.4)
-		owner.adjustToxLoss(1)
-		owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.4)
+	if(drunk_value >= 93.4) // NOVA EDIT CHANGE - Alcohol impairment curve smoothing - ORIGINAL: if(drunk_value >= 91)
+		owner.adjust_tox_loss(1)
+		owner.adjust_organ_loss(ORGAN_SLOT_BRAIN, 0.4)
 		if(owner.stat == CONSCIOUS)
 			attempt_to_blackout()
 
 	// And finally, over 100 - let's be honest, you shouldn't be alive by now.
-	if(drunk_value >= 103.4)
-		owner.adjustToxLoss(2)
-	// NOVA EDIT CHANGE END - ALCOHOL_PROCESSING
+	if(drunk_value >= 103.4) // NOVA EDIT CHANGE - Alcohol impairment curve smoothing - ORIGINAL: if(drunk_value >= 101)
+		owner.adjust_tox_loss(2)
 
 /datum/status_effect/inebriated/drunk/proc/attempt_to_blackout()
 	/* NOVA EDIT REMOVAL - Blackout drunk begone
@@ -257,7 +268,8 @@
 	name = "Drunk"
 	desc = "All that alcohol you've been drinking is impairing your speech, \
 		motor skills, and mental cognition. Make sure to act like it."
-	icon_state = "drunk"
+	use_user_hud_icon = TRUE
+	overlay_state = "drunk"
 
 #undef BALLMER_PEAK_LOW_END
 #undef BALLMER_PEAK_HIGH_END

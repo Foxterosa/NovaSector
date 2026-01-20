@@ -1,6 +1,8 @@
 /datum/language/panslavic
 	name = "Pan-Slavic"
-	desc = "An elaborate mix of various Slavic languages with similar properties that has long since become the official language of the NRI, with a steady amount of relevance in SolFed colonies with Slavic descendants and various types of trading posts and spaceports across Human space - it even managed to find a niche in communication with other species."
+	desc = "An elaborate mix of various Slavic languages with similar properties that has long since become the official language \
+		of the HC, with a steady amount of relevance in SolFed colonies with Slavic descendants and various types of trading posts and \
+		spaceports across Human space - it even managed to find a niche in communication with other species."
 	key = "P"
 	flags = TONGUELESS_SPEECH
 	syllables = list(
@@ -18,6 +20,12 @@
 		"ko", "ni", "spa", "va", "ha", "so", "ba", "sve", "ska", "nov", "cha", "nik",
 		"zem", "lya", "kan", "ce", "la", "ri", "јa", "snezh", "ne", "pa", "da", "vi", "ne"
 	)
+	space_chance = 5
+	sentence_chance = 0
+	between_word_sentence_chance = 10
+	between_word_space_chance = 25
+	additional_syllable_low = 0
+	additional_syllable_high = 0
 	icon_state = "panslavic"
 	icon = 'modular_nova/master_files/icons/misc/language.dmi'
 	default_priority = 95

@@ -1,5 +1,5 @@
 // THIS IS A NOVA SECTOR UI FILE
-import { CheckboxInput, FeatureChoiced, FeatureToggle } from '../../base';
+import { CheckboxInput, type FeatureChoiced, type FeatureToggle } from '../../base';
 import { FeatureDropdownInput } from '../../dropdowns';
 
 export const master_erp_pref: FeatureToggle = {
@@ -20,6 +20,13 @@ export const erp_sounds_pref: FeatureToggle = {
   name: 'ERP sounds',
   category: 'ERP',
   description: 'Toggles if you want to hear sounds from ERP mechanics.',
+  component: CheckboxInput,
+};
+
+export const subtler_sound: FeatureToggle = {
+  name: 'Toggle Subtler Sound',
+  category: 'SOUND',
+  description: 'Toggles whether you hear subtler emote sound effects',
   component: CheckboxInput,
 };
 

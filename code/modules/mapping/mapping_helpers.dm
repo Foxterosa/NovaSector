@@ -130,6 +130,8 @@
 /obj/effect/mapping_helpers/airlock
 	layer = DOOR_HELPER_LAYER
 	late = TRUE
+	/// If TRUE we will apply to every windoor in the loc if we can't find an airlock.
+	var/apply_to_windoors = FALSE
 
 /obj/effect/mapping_helpers/airlock/Initialize(mapload)
 	. = ..()
@@ -139,9 +141,19 @@
 
 	var/obj/machinery/door/airlock/airlock = locate(/obj/machinery/door/airlock) in loc
 	if(!airlock)
+		if(apply_to_windoors)
+			var/any_found = FALSE
+			for(var/obj/machinery/door/window/windoor in loc)
+				payload(windoor)
+				any_found = TRUE
+			if(!any_found)
+				log_mapping("[src] failed to find an airlock at [AREACOORD(src)], AND no windoors were found.")
+			return
+
 		log_mapping("[src] failed to find an airlock at [AREACOORD(src)]")
-	else
-		payload(airlock)
+		return
+
+	payload(airlock)
 
 /obj/effect/mapping_helpers/airlock/LateInitialize()
 	var/obj/machinery/door/airlock/airlock = locate(/obj/machinery/door/airlock) in loc
@@ -167,7 +179,7 @@
 				qdel(src)
 				return
 			if(9 to 11)
-				airlock.lights = FALSE
+				airlock.feedback = FALSE
 				// These do not use airlock.bolt() because we want to pretend it was always locked. That means no sound effects.
 				airlock.locked = TRUE
 			if(12 to 15)
@@ -226,7 +238,15 @@
 
 /obj/effect/mapping_helpers/airlock/unres/payload(obj/machinery/door/airlock/airlock)
 	airlock.unres_sides ^= dir
-	airlock.unres_sensor = TRUE
+	airlock.unres_latch = TRUE
+
+/obj/effect/mapping_helpers/airlock/unres/delayed
+	name = "airlock unrestricted side delayed helper"
+	icon_state = "airlock_unres_delayed_helper"
+
+/obj/effect/mapping_helpers/airlock/unres/delayed/payload(obj/machinery/door/airlock/airlock)
+	. = ..()
+	airlock.delayed_unres_open = TRUE
 
 /obj/effect/mapping_helpers/airlock/abandoned
 	name = "airlock abandoned helper"
@@ -276,6 +296,14 @@
 		log_mapping("[src] at [AREACOORD(src)] tried to set req_access, but req__one_access was already set!")
 	else
 		airlock.req_access += list(ACCESS_INACCESSIBLE)
+
+/obj/effect/mapping_helpers/airlock/red_alert_access
+	name = "airlock red alert access helper"
+	icon_state = "airlock_red_alert_access"
+	apply_to_windoors = TRUE
+
+/obj/effect/mapping_helpers/airlock/red_alert_access/payload(obj/machinery/door/airlock)
+	airlock.red_alert_access = TRUE
 
 //air alarm helpers
 /obj/effect/mapping_helpers/airalarm
@@ -447,6 +475,17 @@
 		log_mapping("[src] failed to find air alarm at [AREACOORD(src)].")
 	qdel(src)
 
+/obj/effect/mapping_helpers/airalarm/surgery
+	name = "airalarm surgery helper"
+	icon_state = "airalarm_surgery_helper"
+
+/obj/effect/mapping_helpers/airalarm/surgery/LateInitialize()
+	var/obj/machinery/airalarm/target = locate() in loc
+	for(var/obj/machinery/atmospherics/components/unary/vent_scrubber/scrubber as anything in target?.my_area?.air_scrubbers)
+		scrubber.filter_types |= /datum/gas/nitrous_oxide
+		scrubber.set_widenet(TRUE)
+	return ..()
+
 //apc helpers
 /obj/effect/mapping_helpers/apc
 	desc = "You shouldn't see this. Report it please."
@@ -595,7 +634,7 @@
 
 /obj/effect/mapping_helpers/turn_off_lights_with_lightswitch/LateInitialize()
 	var/area/needed_area = get_area(src)
-	if(!needed_area.lightswitch)
+	if(!needed_area.lightswitch && !needed_area.light_turned_off_at_spawn) // NOVA EDIT CHANGE - Stops this when RNG turned the light off at roundstart - ORIGINAL: if(!needed_area.lightswitch)
 		stack_trace("[src] at [AREACOORD(src)] [(needed_area.type)] tried to turn lights off but they are already off!")
 	var/obj/machinery/light_switch/light_switch = locate(/obj/machinery/light_switch) in needed_area
 	if(!light_switch)
@@ -922,7 +961,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 
 		body_bag.insert(new_human, TRUE)
 		body_bag.close()
-		body_bag.handle_tag("[new_human.real_name][new_human.dna?.species ? " - [new_human.dna.species.name]" : " - Human"]")
+		body_bag.tag_name = "[new_human.real_name][new_human.dna?.species ? " - [new_human.dna.species.name]" : " - Human"]"
+		body_bag.AddComponent(/datum/component/rename, "[initial(body_bag.name)][body_bag.tag_name? " - [body_bag.tag_name]" : null]", body_bag.desc)
+		body_bag.update_icon()
 		body_bag.forceMove(morgue_tray)
 
 		morgue_tray.update_appearance()
@@ -1063,7 +1104,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	if(locate(/obj/machinery/door/airlock) in turf)
 		var/obj/machinery/door/airlock/found_airlock = locate(/obj/machinery/door/airlock) in turf
 		if(note_path)
-			found_airlock.note = note_path
+			var/obj/item/paper/paper = new note_path(src)
+			found_airlock.note = paper
+			paper.forceMove(found_airlock)
 			found_airlock.update_appearance()
 			qdel(src)
 			return
@@ -1465,3 +1508,29 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_atoms_ontop)
 	name = "Basic mob immune to getting wet flag helper"
 	icon_state = "basic_mob_immune_to_getting_wet"
 	flag_to_give = IMMUNE_TO_GETTING_WET
+
+/obj/effect/mapping_helpers/wall_dent
+	name = "bullet impact dent"
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "bullet_hole"
+	/// Dent type to spawn
+	var/dent_type = WALL_DENT_SHOT
+
+/obj/effect/mapping_helpers/wall_dent/Initialize(mapload)
+	. = ..()
+	if(!mapload)
+		log_mapping("[src] spawned outside of mapload!")
+		return
+
+	var/turf/closed/wall/our_turf = get_turf(src) // In case a locker ate us or something
+	if (!istype(our_turf))
+		log_mapping("[src] placed on a non-wall turf!")
+		return
+
+	our_turf.add_dent(dent_type, pixel_x + pixel_w - ICON_SIZE_X / 2, pixel_y + pixel_z - ICON_SIZE_Y / 2)
+	return INITIALIZE_HINT_QDEL
+
+/obj/effect/mapping_helpers/wall_dent/impact
+	name = "blunt impact dent"
+	icon_state = "impact1"
+	dent_type = WALL_DENT_HIT

@@ -45,6 +45,14 @@
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/cup/beaker( src )
 
+/obj/item/storage/box/beakers/big
+	name = "box of big beakers"
+	illustration = "beaker"
+
+/obj/item/storage/box/beakers/big/PopulateContents()
+	for(var/i in 1 to 7)
+		new /obj/item/reagent_containers/cup/beaker/large(src)
+
 /obj/item/storage/box/beakers/bluespace
 	name = "box of bluespace beakers"
 	illustration = "beaker"
@@ -79,7 +87,7 @@
 	illustration = "dna"
 
 /obj/item/storage/box/injectors/PopulateContents()
-	var/static/items_inside = list(
+	var/list/items_inside = list(
 		/obj/item/dnainjector/h2m = 3,
 		/obj/item/dnainjector/m2h = 3,
 	)
@@ -119,7 +127,7 @@
 	illustration = "beaker"
 
 /obj/item/storage/box/evilmeds/PopulateContents()
-	var/static/list/items_inside = list(
+	var/list/items_inside = list(
 		/obj/item/reagent_containers/cup/beaker/meta/omnizine = 1,
 		/obj/item/reagent_containers/cup/beaker/meta/sal_acid = 1,
 		/obj/item/reagent_containers/cup/beaker/meta/oxandrolone = 1,
@@ -144,15 +152,7 @@
 	illustration = null
 	w_class = WEIGHT_CLASS_SMALL
 	custom_price = PAYCHECK_CREW * 1.75
-
-/obj/item/storage/box/bandages/Initialize(mapload)
-	. = ..()
-	atom_storage.max_slots = 6
-	atom_storage.set_holdable(list(
-		/obj/item/stack/medical/bandage,
-		/obj/item/reagent_containers/pill,
-		/obj/item/reagent_containers/pill/patch,
-	))
+	storage_type = /datum/storage/box/bandages
 
 /obj/item/storage/box/bandages/PopulateContents()
 	for(var/i in 1 to 5)

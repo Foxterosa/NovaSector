@@ -24,16 +24,21 @@
 /// cannot be removed without admin intervention
 #define ROUNDSTART_TRAIT "roundstart"
 #define JOB_TRAIT "job"
-#define CYBORG_ITEM_TRAIT "cyborg-item"
 /// Any traits granted by quirks.
 #define QUIRK_TRAIT "quirk_trait"
+/// Trait source for personality traits
+#define PERSONALITY_TRAIT "personality_trait"
 /// (B)admins only.
 #define ADMIN_TRAIT "admin"
+/// Traits that were granted via modify_traits in vv or the mass_modify_traits verb
+#define TRAIT_ADMIN_GRANTED "adminabuse"
 /// Any traits given through a smite.
 #define SMITE_TRAIT "smite"
 #define CHANGELING_TRAIT "changeling"
 #define CULT_TRAIT "cult"
 #define LICH_TRAIT "lich"
+///Comes from a holy source.
+#define HOLY_TRAIT "holy"
 
 #define VENDING_MACHINE_TRAIT "vending_machine"
 
@@ -99,8 +104,15 @@
 /// Trait given by being recruited as a nuclear operative
 #define NUKE_OP_MINION_TRAIT "nuke-op-minion"
 
+//---- Heretic Traits Sources
+/// Traits given by the heretic arena spell
+#define HERETIC_ARENA_TRAIT "heretic_arena"
+
 /// Trait given to you by shapeshifting
 #define SHAPESHIFT_TRAIT "shapeshift_trait"
+
+///From the cuffed_item status effect
+#define CUFFED_ITEM_TRAIT "cuffed_item_trait"
 
 // unique trait sources, still defines
 #define EMP_TRAIT "emp_trait"
@@ -149,6 +161,8 @@
 
 /// A trait gained from a mob's leap action, like the leaper
 #define LEAPING_TRAIT "leaping"
+/// From grabbing someone
+#define GRABBING_TRAIT "grabbing"
 /// A trait gained from a mob's vanish action, like the herophant
 #define VANISHING_TRAIT "vanishing"
 /// A trait gained from a mob's swoop action, like the ash drake
@@ -195,6 +209,8 @@
 
 /// Trait from mob/living/update_transform()
 #define UPDATE_TRANSFORM_TRAIT "update_transform"
+/// Trait from mob/living/update_offsets()
+#define UPDATE_OFFSET_TRAIT "update_offset"
 
 /// Trait granted by the berserker hood.
 #define BERSERK_TRAIT "berserk_trait"
@@ -313,3 +329,6 @@
 
 /// Permanent trait from an overdose effect
 #define OVERDOSE_TRAIT "overdose"
+
+/// Trait gained by a guardian who is recalled
+#define GUARDIAN_RECALLED "guardian_recalled"

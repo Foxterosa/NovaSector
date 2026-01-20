@@ -8,7 +8,7 @@
 	desc = "<b>Left click</b> to coil/uncoil your powerful tail around something, <b>right click</b> to begin crushing."
 	check_flags = AB_CHECK_LYING|AB_CHECK_CONSCIOUS|AB_CHECK_INCAPACITATED|AB_CHECK_PHASED
 
-	button_icon = 'modular_nova/modules/taur_mechanics/sprites/ability.dmi'
+	button_icon = 'modular_nova/modules/taur_mechanics/icons/ability.dmi'
 	button_icon_state = "constrict"
 
 	ranged_mousepointer = 'icons/effects/mouse_pointers/supplypod_pickturf.dmi'
@@ -43,8 +43,7 @@
 			qdel(tail)
 			return TRUE
 
-		create_tail()
-		return TRUE
+		return FALSE
 
 	var/mob/living/living_target = clicked_on
 
@@ -125,7 +124,7 @@
 	name = "serpentine tail"
 	desc = "A scaley tail, currently coiled."
 
-	icon = 'modular_nova/modules/taur_mechanics/sprites/tail.dmi'
+	icon = 'modular_nova/modules/taur_mechanics/icons/tail.dmi'
 	icon_state = "naga"
 	pixel_x = -16
 
@@ -190,7 +189,7 @@
 	if (tail_overlay)
 		return tail_overlay // we already have it
 
-	tail_overlay = mutable_appearance('modular_nova/modules/taur_mechanics/sprites/tail.dmi', "naga_top", ABOVE_MOB_LAYER + 0.01, src)
+	tail_overlay = mutable_appearance('modular_nova/modules/taur_mechanics/icons/tail.dmi', "naga_top", ABOVE_MOB_LAYER + 0.01, src)
 	tail_overlay.appearance_flags = TILE_BOUND|PIXEL_SCALE|KEEP_TOGETHER
 	tail_overlay.setDir(owner.dir)
 	add_overlay(tail_overlay)
@@ -214,8 +213,9 @@
 /obj/structure/serpentine_tail/proc/sync_sprite()
 	//coloring
 	var/list/finished_list = list()
-	var/list/color_list = owner.dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_COLOR_LIST] //identify color
-	var/datum/sprite_accessory/sprite_type = SSaccessories.sprite_accessories["taur"][owner.dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]] //identify type
+	var/datum/mutant_bodypart/taur_body = owner.dna.mutant_bodyparts[FEATURE_TAUR]
+	var/list/color_list = taur_body.get_colors() //identify color
+	var/datum/sprite_accessory/sprite_type = SSaccessories.sprite_accessories[FEATURE_TAUR][taur_body.name] //identify type
 
 	switch(sprite_type.color_src)
 		if(USE_MATRIXED_COLORS)
@@ -643,7 +643,7 @@
 	name = "Constricted"
 	desc = "You're being constricted by a giant tail! You can resist, attack the tail, or attack the constrictor to escape!"
 
-	icon = 'modular_nova/modules/taur_mechanics/sprites/ability.dmi'
+	icon = 'modular_nova/modules/taur_mechanics/icons/ability.dmi'
 	icon_state = "constrict"
 
 #undef CONSTRICT_BASE_PIXEL_SHIFT

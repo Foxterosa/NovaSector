@@ -83,8 +83,8 @@
 
 	ore_input.color = COLOR_MODERATE_BLUE
 	var/mutable_appearance/light_in = emissive_appearance(ore_input.icon, ore_input.icon_state, offset_spokesman = src, alpha = ore_input.alpha)
-	light_in.pixel_y = ore_input.pixel_y
-	light_in.pixel_x = ore_input.pixel_x
+	light_in.pixel_w = ore_input.pixel_y
+	light_in.pixel_z = ore_input.pixel_x
 	. += ore_input
 	. += light_in
 
@@ -123,11 +123,11 @@
 		SSore_generation.available_boulders -= mine_now //Decouple the boulder from the network. Cant be stolen
 	return
 
-/obj/structure/ore_box/boulder_collector/attackby(obj/item/weapon, mob/user, params)
-	if(istype(weapon, /obj/item/boulder))
-		var/obj/item/boulder/mine_now = weapon
+/obj/structure/ore_box/boulder_collector/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
+	if(istype(attacking_item, /obj/item/boulder))
+		var/obj/item/boulder/mine_now = attacking_item
 		SSore_generation.available_boulders -= mine_now
-		user.transferItemToLoc(weapon, src)
+		user.transferItemToLoc(attacking_item, src)
 	else
 		return ..()
 

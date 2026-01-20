@@ -11,11 +11,8 @@
 	/// Innate skill levels unlocked at roundstart. Based on config.jobs_have_minimal_access config setting, for example with a full crew. Format is list(/datum/skill/foo = SKILL_EXP_NOVICE) with exp as an integer or as per code/_DEFINES/skills.dm
 	var/list/minimal_skills
 
-	/// Determines who can demote this position
-	var/department_head = list()
-
 	/// Tells the given channels that the given mob is the new department head. See communications.dm for valid channels.
-	var/list/head_announce = null
+	var/head_announce
 
 	/// Bitflags for the job
 	var/auto_deadmin_role_flags = NONE
@@ -44,10 +41,10 @@
 	/// If you have the use_age_restriction_for_jobs config option enabled and the database set up, this option will add a requirement for players to be at least minimal_player_age days old. (meaning they first signed in at least that many days before.)
 	var/minimal_player_age = 0
 
-	var/outfit = null
+	var/datum/outfit/outfit = null
 
 	/// The job's outfit that will be assigned for plasmamen.
-	var/plasmaman_outfit = null
+	var/datum/outfit/plasmaman/plasmaman_outfit = null
 
 	/// Minutes of experience-time required to play in this job. The type is determined by [exp_required_type] and [exp_required_type_department] depending on configs.
 	var/exp_requirements = 0
@@ -195,7 +192,7 @@
 /// Note the joining mob has no client at this point.
 /datum/job/proc/announce_job(mob/living/joining_mob, job_title) // NOVA EDIT CHANGE - ALTERNATIVE_JOB_TITLES - Original: /datum/job/proc/announce_job(mob/living/joining_mob)
 	if(head_announce)
-		announce_head(joining_mob, head_announce, job_title) // NOVA EDIT CHANGE - ALTERNATIVE_JOB_TITLES - Original: announce_head(joining_mob, head_announce)
+		announce_head(joining_mob, list(head_announce), job_title) // NOVA EDIT CHANGE - ALTERNATIVE_JOB_TITLES - Original: announce_head(joining_mob, list(head_announce))
 
 
 //Used for a special check of whether to allow a client to latejoin as this job.
@@ -211,7 +208,7 @@
 /mob/living/carbon/human/on_job_equipping(datum/job/equipping, client/player_client)
 	if(equipping.paycheck_department)
 		var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
-		bank_account.payday(STARTING_PAYCHECKS, TRUE)
+		bank_account.payday(STARTING_PAYCHECKS, free = TRUE)
 		account_id = bank_account.account_id
 		bank_account.replaceable = FALSE
 		add_mob_memory(/datum/memory/key/account, remembered_id = account_id)
@@ -241,20 +238,10 @@
 	dna.species.pre_equip_species_outfit(equipping, src, visual_only)
 	equip_outfit_and_loadout(equipping.get_outfit(consistent), player_client?.prefs, visual_only, equipping) // NOVA EDIT - Loadout stuff - ORIGINAL: equip_outfit_and_loadout(equipping.get_outfit(consistent), player_client?.prefs, visual_only)
 
-/datum/job/proc/announce_head(mob/living/carbon/human/human, channels, job_title) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels. // NOVA EDIT CHANGE - ALTERNATIVE_JOB_TITLES - Original: /datum/job/proc/announce_head(mob/living/carbon/human/human, channels)
-	if(!human)
-		return
-	var/obj/machinery/announcement_system/system
-	var/list/available_machines = list()
-	for(var/obj/machinery/announcement_system/announce as anything in GLOB.announcement_systems)
-		if(announce.newhead_toggle)
-			available_machines += announce
-			break
-	if(!length(available_machines))
-		return
-	system = pick(available_machines)
-	//timer because these should come after the captain announcement
-	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(system, TYPE_PROC_REF(/obj/machinery/announcement_system, announce), AUTO_ANNOUNCE_NEWHEAD, human.real_name, job_title, channels), 1)) // NOVA EDIT CHANGE - ALTERNATIVE_JOB_TITLES - Original: SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(system, TYPE_PROC_REF(/obj/machinery/announcement_system, announce), AUTO_ANNOUNCE_NEWHEAD, human.real_name, human.job, channels), 1))
+/datum/job/proc/announce_head(mob/living/carbon/human/human, channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.
+	if(human)
+		//timer because these should come after the captain announcement
+		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(aas_config_announce), /datum/aas_config_entry/newhead, list("PERSON" = human.real_name, "RANK" = human.job), null, channels, null, TRUE), 1)) // NOVA EDIT CHANGE - Alternative job titles, change human.job to job_title - Original: SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(aas_config_announce), /datum/aas_config_entry/newhead, list("PERSON" = human.real_name, "RANK" = human.job), null, channels, null, TRUE), 1))
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/job/proc/player_old_enough(client/player)
@@ -411,6 +398,10 @@
 				back = /obj/item/storage/backpack/tinypaka
 			if(TPACKC)
 				back = /obj/item/storage/backpack/tinypakc
+			if(UDCPACK)
+				back = /obj/item/storage/backpack/udc
+			if(GUNCASE)
+				back = /obj/item/storage/toolbox/guncase/nova
 			// NOVA EDIT ADDITION START
 			else
 				back = backpack //Department backpack
@@ -455,22 +446,29 @@
 
 		if(account && account.account_id == equipped.account_id)
 			card.registered_account = account
-			account.bank_cards += card
+			LAZYADD(account.bank_cards, card)
 
-		equipped.sec_hud_set_ID()
+		equipped.update_ID_card()
+
+	if(!pda_slot) //This job outfit doesn't have a PDA.
+		return
 
 	var/obj/item/modular_computer/pda/pda = equipped.get_item_by_slot(pda_slot)
+	if(pda && !istype(pda)) //we found something but it isn't a PDA, check if it's inside it instead.
+		pda = locate() in pda
 
-	if(istype(pda))
-		pda.imprint_id(equipped.real_name, equipped_job.title)
-		pda.update_ringtone(equipped_job.job_tone)
-		pda.UpdateDisplay()
+	if(!istype(pda)) //We couldn't find a PDA at all.
+		stack_trace("pda_slot was set but we couldn't find a PDA!")
+		return
 
-		var/client/equipped_client = GLOB.directory[ckey(equipped.mind?.key)]
+	pda.imprint_id(equipped.real_name, equipped_job.title)
+	pda.update_ringtone(equipped_job.job_tone)
+	pda.UpdateDisplay()
 
-		if(equipped_client)
-			pda.update_pda_prefs(equipped_client)
+	var/client/equipped_client = GLOB.directory[ckey(equipped.mind?.key)]
 
+	if(equipped_client)
+		pda.update_pda_prefs(equipped_client)
 
 /datum/outfit/job/get_chameleon_disguise_info()
 	var/list/types = ..()
@@ -563,8 +561,7 @@
 		// This is unfortunately necessary because of snowflake AI init code. To be refactored.
 		spawn_instance = new spawn_type(get_turf(spawn_point), null, player_client.mob)
 	else
-		spawn_instance = new spawn_type(player_client.mob.loc)
-		spawn_point.JoinPlayerHere(spawn_instance, TRUE)
+		spawn_instance = spawn_point.JoinPlayerHere(spawn_type, TRUE)
 	spawn_instance.apply_prefs_job(player_client, src)
 	if(!player_client)
 		qdel(spawn_instance)
@@ -693,3 +690,23 @@
 /datum/job/proc/after_latejoin_spawn(mob/living/spawning)
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_JOB_AFTER_LATEJOIN_SPAWN, src, spawning)
+
+/// Called when a mob that has this job is admin respawned
+/datum/job/proc/on_respawn(mob/new_character)
+	SSjob.equip_rank(new_character, new_character.mind.assigned_role, new_character.client)
+
+/// This proc may be called when someone of this job is made into a traitor to create custom objectives related to the job.
+/datum/job/proc/generate_traitor_objective()
+	return null
+
+/// Returns a large (due to cropping) icon of this job's sechud icon state.
+/datum/job/proc/get_lobby_icon() as /icon
+	var/datum/outfit/job_outfit = outfit
+	if(!job_outfit || !job_outfit::id_trim)
+		CRASH("[src.type] has no job outfit but isn't overwriting get_lobby_icon().")
+	var/datum/id_trim/job_trim = job_outfit::id_trim
+	var/icon_state = job_trim::sechud_icon_state
+	if(!icon_state || icon_state == SECHUD_UNKNOWN)
+		CRASH("[src.type] has no job icon state.")
+
+	return icon('icons/mob/huds/hud.dmi', icon_state)

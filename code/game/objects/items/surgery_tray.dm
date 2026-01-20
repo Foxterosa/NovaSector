@@ -6,13 +6,14 @@
  */
 /obj/item/surgery_tray
 	name = "surgery tray"
-	desc = "A Deforest brand medical cart. It is a folding model, meaning the wheels on the bottom can be retracted and the body used as a tray."
+	desc = "A DeForest-brand medical cart. It is a folding model, meaning the wheels on the bottom can be retracted and the body used as a tray."
 	icon = 'icons/obj/medical/medicart.dmi'
 	icon_state = "tray"
 	w_class = WEIGHT_CLASS_BULKY
 	slowdown = 1
 	item_flags = SLOWS_WHILE_IN_HAND
 	pass_flags = NONE
+	custom_materials = list(/datum/material/silver = SHEET_MATERIAL_AMOUNT, /datum/material/iron = SHEET_MATERIAL_AMOUNT)
 
 	/// If true we're currently portable
 	var/is_portable = TRUE
@@ -172,7 +173,7 @@
 		/obj/item/cautery,
 		/obj/item/circular_saw,
 		/obj/item/clothing/mask/surgical,
-		/obj/item/clothing/suit/toggle/labcoat/nova/hospitalgown, // NOVA EDIT ADDITION
+		/obj/item/clothing/suit/toggle/labcoat/nova/surgical_gown, // NOVA EDIT ADDITION
 		/obj/item/hemostat,
 		/obj/item/razor/surgery,
 		/obj/item/retractor,
@@ -188,15 +189,15 @@
 
 /obj/item/surgery_tray/full/morgue
 	name = "autopsy tray"
-	desc = "A Deforest brand surgery tray, made for use in morgues. It is a folding model, \
+	desc = "A DeForest-brand surgery tray, made for use in morgues. It is a folding model, \
 		meaning the wheels on the bottom can be extended outwards, making it a cart."
 	starting_items = list(
-		/obj/item/blood_filter,
-		/obj/item/bonesetter,
+		/obj/item/blood_filter/cruel,
+		/obj/item/bonesetter/cruel,
 		/obj/item/cautery/cruel,
-		/obj/item/circular_saw,
+		/obj/item/circular_saw/cruel,
 		/obj/item/clothing/mask/surgical,
-		/obj/item/clothing/suit/toggle/labcoat/nova/hospitalgown, // NOVA EDIT ADDITION
+		/obj/item/clothing/suit/toggle/labcoat/nova/surgical_gown, // NOVA EDIT ADDITION
 		/obj/item/hemostat/cruel,
 		/obj/item/razor/surgery,
 		/obj/item/retractor/cruel,
@@ -204,7 +205,7 @@
 		/obj/item/stack/medical/bone_gel,
 		/obj/item/stack/sticky_tape/surgical,
 		/obj/item/surgical_drapes,
-		/obj/item/surgicaldrill,
+		/obj/item/surgicaldrill/cruel,
 	)
 
 /obj/item/surgery_tray/full/morgue/deployed
@@ -220,10 +221,11 @@
 		/obj/item/reagent_containers/medigel/sterilizine,
 		/obj/item/bonesetter,
 		/obj/item/blood_filter,
+		/obj/item/shears,
 		/obj/item/stack/medical/bone_gel,
 		/obj/item/stack/sticky_tape/surgical,
 		/obj/item/clothing/mask/surgical,
-		/obj/item/clothing/suit/toggle/labcoat/nova/hospitalgown, // NOVA EDIT ADDITION
+		/obj/item/clothing/suit/toggle/labcoat/nova/surgical_gown, // NOVA EDIT ADDITION
 	)
 
 /obj/effect/spawner/surgery_tray

@@ -128,8 +128,26 @@
 	gender = FEMALE
 	hides_groin = TRUE //an undershirt-specific bit of code, so the corset has to be an undershirt... unless you want to refactor it
 
+//This was going to be a bra, then I realized that bras do not get chopped apart by male/female bodytypes. I guess it makes more sense as an undershirt?
+/datum/sprite_accessory/undershirt/crop_corset
+	name = "Corset - Cropped"
+	icon_state = "crop_corset"
+	use_static = FALSE
+	gender = FEMALE
+
 /datum/sprite_accessory/undershirt/babydoll
 	name = "Babydoll"
 	icon_state = "babydoll"
 	gender = FEMALE
+	use_static = FALSE
+
+//These are just copies of a bra sprite-accessory, but they layer over other bras instead.
+/datum/sprite_accessory/undershirt/fishnet_sleeves
+	name = "Fishnet - Sleeved (Greyscale)"
+	icon_state = "fishnet_sleeves_alt"
+	use_static = FALSE
+
+/datum/sprite_accessory/undershirt/fishnet_base
+	name = "Fishnet - Sleeveless (Greyscale)"
+	icon_state = "fishnet_body_alt"
 	use_static = FALSE

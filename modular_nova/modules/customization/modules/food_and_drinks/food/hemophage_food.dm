@@ -1,3 +1,8 @@
+// Override to add the bloody type to these tgmaters
+/obj/item/food/grown/tomato/blood/Initialize(mapload, obj/item/seeds/new_seed)
+	foodtypes |= BLOODY
+	return ..()
+
 /obj/item/food/hemophage
 	name = "bloody food"
 	desc = "If you see this, then something's gone very wrong and you should report it whenever you get the chance."
@@ -99,7 +104,7 @@
 		/datum/reagent/blood = 25,
 	)
 	tastes = list("blood" = 5, "crunchy rice" = 2, "peanut butter" = 2)
-	foodtypes = GRAIN | GORE | BLOODY | SUGAR | NUTS
+	foodtypes = GRAIN | GORE | BLOODY | SUGAR | NUTS | BREAKFAST
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/soup/hemophage/blood_soup
